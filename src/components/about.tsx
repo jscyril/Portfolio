@@ -1,116 +1,121 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+const skills = [
+  "TypeScript",
+  "React",
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "MongoDB",
+  "Go",
+  "Java",
+  "React Native",
+  "Python",
+  "Linux",
+  "Docker",
+];
+
 const AboutMe = () => {
   const { ref: sectionRef, inView: sectionInView } = useInView({
-    triggerOnce: true, // Only trigger animation once
-    threshold: 0.2, // Trigger animation when 20% of the element is visible
+    triggerOnce: true,
+    threshold: 0.1,
   });
 
-  const { ref: textRef, inView: textInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-  const { ref: imageRef, inView: imageInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   return (
     <section
       id="about"
       ref={sectionRef}
-      className="bg-[#0B132B] text-white py-20 px-4 lg:py-28 lg:px-0 about-background"
+      className="relative py-24 px-4 lg:py-32"
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <motion.h2
-          className="text-4xl lg:text-5xl font-bold text-[#6FFFE9] mb-8 relative"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{
-            opacity: sectionInView ? 1 : 0,
-            y: sectionInView ? 0 : 50,
-          }}
-          transition={{ duration: 1 }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-4 mb-12"
         >
-          About Me
-        </motion.h2>
+          <h2 className="text-3xl lg:text-4xl font-bold gradient-text">
+            About Me
+          </h2>
+          <div className="flex-1 h-px bg-gradient-to-r from-[var(--accent-primary)] to-transparent" />
+        </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12">
-          {/* Text Content */}
-          <motion.div
-            ref={textRef}
-            className="lg:w-3/5 text-lg leading-relaxed space-y-6 text-[#ccd6f6]"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{
-              opacity: textInView ? 1 : 0,
-              x: textInView ? 0 : -50,
-            }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <p>
-              Hi there! My name is{" "}
-              <span className="text-[#6FFFE9] font-semibold">Jacob Cyril</span>,
-              and I'm a passionate full-stack developer with a focus on backend
-              development. I enjoy creating applications that are not only
-              efficient and scalable but also intuitive and enjoyable for users.
-            </p>
-            <p>
-              I've had the privilege of working on a variety of projects, from
-              building robust APIs to designing databases and optimizing system
-              performance. I'm continuously expanding my skills, exploring new
-              frameworks, and collaborating on exciting ideas.
-            </p>
-            <p>
-              Beyond coding, I enjoy exploring tech trends and tinkering with
-              new technologies. I'm a firm believer in simplicity, and my
-              philosophy is all about building solutions that matter.
-            </p>
-            <p>Here are a few technologies I've been working with recently:</p>
-            {/* Tech Stack */}
-            <ul className="grid grid-cols-2 gap-y-2 mt-4 text-sm font-mono text-[#8892b0]">
-              <li className="before:content-['▹'] before:text-[#6FFFE9] before:mr-2">
-                ExpressJS
-              </li>
-              <li className="before:content-['▹'] before:text-[#6FFFE9] before:mr-2">
-                NodeJS
-              </li>
-              <li className="before:content-['▹'] before:text-[#6FFFE9] before:mr-2">
-                ReactJS
-              </li>
-              <li className="before:content-['▹'] before:text-[#6FFFE9] before:mr-2">
-                TypeScript
-              </li>
-              <li className="before:content-['▹'] before:text-[#6FFFE9] before:mr-2">
-                PostgreSQL
-              </li>
-              <li className="before:content-['▹'] before:text-[#6FFFE9] before:mr-2">
-                React Native
-              </li>
-            </ul>
-          </motion.div>
+        {/* Text Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="space-y-6"
+        >
+          <p className="text-[var(--text-secondary)] text-lg leading-relaxed">
+            Hello! I'm{" "}
+            <span className="text-[var(--accent-secondary)] font-semibold">
+              Jacob Sebastian Cyril
+            </span>
+            , a passionate software engineer with a strong focus on
+            backend development. I love creating applications that are not
+            only efficient and scalable but also intuitive and enjoyable for
+            users.
+          </p>
+          <p className="text-[var(--text-secondary)] text-lg leading-relaxed">
+            I've had the privilege of working on a variety of projects, from
+            building robust APIs to designing databases and optimizing system
+            performance. I'm continuously expanding my skills, exploring new
+            frameworks, and collaborating on exciting ideas.
+          </p>
+          <p className="text-[var(--text-secondary)] text-lg leading-relaxed">
+            Beyond coding, I enjoy exploring tech trends and tinkering with
+            new technologies. My philosophy is all about building solutions
+            that matter.
+          </p>
 
-          {/* Image Section */}
-          <motion.div
-            ref={imageRef}
-            className="lg:w-[30%] relative"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{
-              opacity: imageInView ? 1 : 0,
-              scale: imageInView ? 1 : 0.8,
-            }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            <div className="relative group">
-              <img
-                src="avatar.png" // Replace with your profile image path
-                alt="Jacob Cyril"
-                className="rounded-lg object-cover shadow-lg w-full max-w-sm mx-auto filter grayscale hover:grayscale-0 transition duration-500 ease-in-out"
-              />
-            </div>
-          </motion.div>
-        </div>
+          {/* Skills */}
+          <div className="pt-6">
+            <h3 className="text-[var(--text-primary)] font-semibold mb-4">
+              Technologies I work with:
+            </h3>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate={sectionInView ? "visible" : "hidden"}
+              className="flex flex-wrap gap-3"
+            >
+              {skills.map((skill) => (
+                <motion.span
+                  key={skill}
+                  variants={itemVariants}
+                  className="px-4 py-2 rounded-full text-sm font-mono bg-[var(--bg-secondary)] text-[var(--text-secondary)] border border-[var(--glass-border)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-secondary)] transition-all duration-300 cursor-default"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                >
+                  {skill}
+                </motion.span>
+              ))}
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

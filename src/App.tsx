@@ -4,14 +4,21 @@ import HeroSection from "./components/hero";
 import NavBar from "./components/nav";
 import ProjectsSection from "./components/projects";
 import BackToTopButton from "./components/backToTop";
+import AnimatedBackground from "./components/AnimatedBackground";
+import Footer from "./components/Footer";
+
 function App() {
   return (
     <>
+      <AnimatedBackground />
       <NavBar />
-      <HeroSection />
-      <AboutMe />
-      <ProjectsSection />
-      <ContactSection />
+      <main>
+        <HeroSection />
+        <AboutMe />
+        <ProjectsSection />
+        <ContactSection />
+      </main>
+      <Footer />
       <BackToTopButton />
     </>
   );
