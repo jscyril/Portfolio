@@ -1,48 +1,30 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 
 const BackToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
+    const toggleVisibility = () => setIsVisible(window.scrollY > 420);
 
+    toggleVisibility();
     window.addEventListener("scroll", toggleVisibility);
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  if (!isVisible) {
+    return null;
+  }
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.2 }}
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-[var(--bg-secondary)] border border-[var(--accent-primary)] text-[var(--accent-secondary)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 hover:shadow-[0_0_20px_var(--accent-glow)]"
-          whileHover={{ scale: 1.1, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          aria-label="Back to top"
-        >
-          <ArrowUp className="w-5 h-5" />
-        </motion.button>
-      )}
-    </AnimatePresence>
+    <button
+      type="button"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center border border-[var(--accent)] bg-[var(--surface)] text-[var(--accent)] transition-colors duration-200 hover:bg-[var(--accent)] hover:text-[var(--bg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+      aria-label="Back to top"
+    >
+      <ArrowUp className="h-5 w-5" />
+    </button>
   );
 };
 

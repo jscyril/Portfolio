@@ -1,136 +1,107 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/logo.svg";
+import { AnimatePresence, motion } from "framer-motion";
+import { profile } from "@/data/portfolio";
 
 const navLinks = [
   { name: "About", href: "#about" },
+  { name: "Experience", href: "#experience" },
   { name: "Projects", href: "#projects" },
+  { name: "Skill", href: "#skills" },
   { name: "Contact", href: "#contact" },
 ];
 
-export default function Navbar() {
+export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${isScrolled
-        ? "glass shadow-lg"
-        : "bg-transparent"
-        }`}
+    <header
+      className={`fixed left-0 top-0 z-50 w-full border-b transition-colors duration-300 ${
+        isScrolled
+          ? "border-[var(--border)] bg-[rgba(15,17,21,0.92)] backdrop-blur"
+          : "border-transparent bg-transparent"
+      }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <motion.a
-            href="/"
-            className="flex items-center"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+      <nav
+        className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8"
+        aria-label="Primary navigation"
+      >
+        <a href="#hero" className="group flex items-center gap-3">
+          <span className="block-mark" aria-hidden="true" />
+          <span className="text-sm font-semibold uppercase text-[var(--text-primary)]">
+            {profile.name}
+          </span>
+        </a>
+
+        <div className="hidden items-center gap-1 md:flex">
+          {navLinks.map((link) => (
+            <a key={link.name} href={link.href} className="nav-link">
+              {link.name}
+            </a>
+          ))}
+          <a
+            href={profile.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-3 inline-flex h-10 items-center border border-[var(--accent)] px-4 font-mono text-xs uppercase text-[var(--accent)] transition-colors duration-200 hover:bg-[var(--accent)] hover:text-[var(--bg-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
           >
-            <img src={logo} alt="Logo" className="h-10 w-10" />
-          </motion.a>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-1">
-            {navLinks.map((link, index) => (
-              <motion.a
-                key={link.name}
-                href={link.href}
-                className="px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--accent-secondary)] transition-colors duration-300"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                {link.name}
-              </motion.a>
-            ))}
-
-            {/* Resume Button */}
-            <motion.a
-              href="https://drive.google.com/file/d/1RxT7dXFQLgYDUx8LPj2a80C_wVlMW-d5/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-4 px-5 py-2 rounded-lg border border-[var(--accent-primary)] text-[var(--accent-secondary)] hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 hover:shadow-[0_0_20px_var(--accent-glow)]"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Resume
-            </motion.a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-[var(--accent-secondary)] hover:bg-[var(--bg-tertiary)] transition-colors duration-300"
-            whileTap={{ scale: 0.9 }}
-          >
-            <span className="sr-only">Open menu</span>
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </motion.button>
+            Resume
+          </a>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
+        <button
+          type="button"
+          onClick={() => setIsMenuOpen((value) => !value)}
+          className="inline-flex h-11 w-11 items-center justify-center border border-[var(--border)] text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)] md:hidden"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </nav>
+
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden glass border-t border-[var(--glass-border)]"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18 }}
+            className="border-t border-[var(--border)] bg-[var(--bg-primary)] px-5 py-4 md:hidden"
           >
-            <div className="px-4 py-4 space-y-2">
-              {navLinks.map((link, index) => (
-                <motion.a
+            <div className="mx-auto grid max-w-7xl gap-2">
+              {navLinks.map((link) => (
+                <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-300"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  className="border border-transparent px-3 py-3 font-mono text-sm uppercase text-[var(--text-muted)] transition-colors duration-200 hover:border-[var(--border)] hover:text-[var(--accent)]"
                 >
                   {link.name}
-                </motion.a>
+                </a>
               ))}
-              <motion.a
-                href="https://drive.google.com/file/d/1RxT7dXFQLgYDUx8LPj2a80C_wVlMW-d5/view?usp=sharing"
+              <a
+                href={profile.resume}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsMenuOpen(false)}
-                className="block px-4 py-3 rounded-lg border border-[var(--accent-primary)] text-[var(--accent-secondary)] text-center hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
+                className="mt-2 inline-flex h-11 items-center justify-center border border-[var(--accent)] px-4 font-mono text-xs uppercase text-[var(--accent)] transition-colors duration-200 hover:bg-[var(--accent)] hover:text-[var(--bg-primary)]"
               >
                 Resume
-              </motion.a>
+              </a>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </header>
   );
 }

@@ -1,84 +1,76 @@
+import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { Mail, Send } from "lucide-react";
+import { profile } from "@/data/portfolio";
+
+const contactLinks = [
+  {
+    label: "Email",
+    value: profile.email,
+    href: `mailto:${profile.email}`,
+    icon: Mail,
+  },
+  {
+    label: "GitHub",
+    value: "github.com/jscyril",
+    href: profile.github,
+    icon: Github,
+  },
+  {
+    label: "LinkedIn",
+    value: "jacob-sebastian-cyril",
+    href: profile.linkedin,
+    icon: Linkedin,
+  },
+];
 
 const ContactSection = () => {
-  const { ref: sectionRef, inView: sectionInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
   return (
-    <section
-      id="contact"
-      ref={sectionRef}
-      className="relative py-24 px-4 lg:py-32"
-    >
-      <div className="max-w-3xl mx-auto text-center">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
-          <p className="text-[var(--accent-secondary)] font-mono mb-4">
-            What's Next?
-          </p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-[var(--text-primary)] mb-6">
-            Get In Touch
-          </h2>
-        </motion.div>
+    <section id="contact" className="section-shell border-t border-[var(--border)]">
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.35 }}
+        className="mx-auto max-w-7xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 lg:p-10"
+      >
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-end">
+          <div>
+            <p className="section-kicker">05 / Contact</p>
+            <h2 className="mt-5 max-w-3xl text-4xl font-black leading-tight text-[var(--text-primary)] sm:text-5xl">
+              Let&apos;s build something clean, reliable, and useful.
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--text-muted)]">
+              I&apos;m open to software development opportunities, technical
+              collaborations, and project conversations.
+            </p>
+          </div>
 
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-[var(--text-tertiary)] text-lg max-w-xl mx-auto mb-10 leading-relaxed"
-        >
-          I'm currently looking for new opportunities and my inbox is always
-          open. Whether you have a question, a project idea, or just want to say
-          hello, I'd love to hear from you!
-        </motion.p>
-
-        {/* CTA Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <motion.a
-            href="mailto:jacobsebcyril@gmail.com"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-lg bg-transparent border-2 border-[var(--accent-primary)] text-[var(--accent-secondary)] font-semibold hover:bg-[var(--accent-primary)] hover:text-white transition-all duration-300 hover:shadow-[0_0_30px_var(--accent-glow)]"
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Mail className="w-5 h-5" />
-            Say Hello
-            <Send className="w-4 h-4" />
-          </motion.a>
-        </motion.div>
-
-        {/* Email directly */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={sectionInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-6 text-[var(--text-tertiary)] text-sm"
-        >
-          Or email me at{" "}
-          <a
-            href="mailto:jacobsebcyril@gmail.com"
-            className="text-[var(--accent-secondary)] hover:text-[var(--accent-tertiary)] transition-colors duration-300 link-underline"
-          >
-            jacobsebcyril@gmail.com
-          </a>
-        </motion.p>
-      </div>
-
-      {/* Decorative gradient */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[var(--accent-primary)] to-transparent opacity-50" />
+          <div className="grid gap-3">
+            {contactLinks.map(({ label, value, href, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("mailto:") ? undefined : "_blank"}
+                rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 border border-[var(--border)] p-4 transition-colors duration-200 hover:border-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
+              >
+                <span className="inline-flex h-10 w-10 items-center justify-center border border-[var(--border)] text-[var(--accent)]">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block font-mono text-xs uppercase text-[var(--text-soft)]">
+                    {label}
+                  </span>
+                  <span className="mt-1 block break-all text-sm text-[var(--text-primary)]">
+                    {value}
+                  </span>
+                </span>
+                <ArrowUpRight className="h-5 w-5 text-[var(--text-muted)] transition-colors duration-200 group-hover:text-[var(--accent)]" />
+              </a>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };
