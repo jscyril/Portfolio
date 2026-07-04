@@ -64,6 +64,13 @@ export const projects: Project[] = [
     githubLink: "https://github.com/jscyril/gtmpc",
   },
   {
+    title: "CCPA Compliance Analyzer",
+    description:
+      "A RAG-based compliance analyzer that checks business practices against CCPA statutes using FastAPI, Gemini, ChromaDB, semantic retrieval, and structured JSON verdicts.",
+    technologies: ["Python", "FastAPI", "Gemini", "ChromaDB", "React", "Docker"],
+    githubLink: "https://github.com/jscyril/ccpa_compliance_system",
+  },
+  {
     title: "RentScope",
     description:
       "An ML-powered property recommendation app for personalized rent predictions and smarter property search decisions.",
